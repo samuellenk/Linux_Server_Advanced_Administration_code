@@ -127,7 +127,7 @@ Export‑Liste anzeigen:
 ```bash
 # kurze Ausgabe:
 sudo exportfs
-# asuführliche Ausgabe:
+# ausführliche Ausgabe:
 sudo exportfs -v
 ```
 

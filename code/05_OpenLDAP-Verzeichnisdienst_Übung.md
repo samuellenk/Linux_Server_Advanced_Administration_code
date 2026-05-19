@@ -97,7 +97,7 @@ ldapsearch -x -H ldapi:/// -D "cn=admin,dc=example,dc=net" -W -b "dc=example,dc=
 ldapsearch -x -b "dc=example,dc=net"
 ```
 - gibt alle Objekte aus
-- im Abschnitt zum [LDAP-Client](./code/exercises/210_ldap_client_03.md) geht es ausführlicher um die Suche
+- im Abschnitt zum [LDAP-Client](./05_OpenLDAP-Verzeichnisdienst_Client_Übung.md) geht es ausführlicher um die Suche
 
 # User und Gruppen administrieren
 
@@ -151,7 +151,7 @@ olcAccess: {2}to dn.base="cn=Subschema" by * read
 olcAccess: {3}to dn.subtree="dc=example,dc=net" by users read
 ```
 
-Datenbanken auflistem:
+Datenbanken auflisten:
 ```bash
 sudo ldapsearch -Y EXTERNAL -H ldapi:/// -b cn=config olcDatabase
 ```
@@ -217,7 +217,7 @@ olcTLSCertificateKeyFile: /etc/ldap/ldap.key
 ```
 
 Zugriff über `ldaps` in `/etc/default/slapd` hinzufügen:
-```bash
+```config
 SLAPD_SERVICES="ldap:/// ldaps:/// ldapi:///"
 ```
 - der Teil mit `ldaps:///` muss eingefügt werden

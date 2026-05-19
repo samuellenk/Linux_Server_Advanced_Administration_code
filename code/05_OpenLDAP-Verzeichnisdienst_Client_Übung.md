@@ -31,7 +31,7 @@ Vor allem soll es um Suche in LDAP gehen, mithilfe der Befehle:
 # Fähigkeiten des LDAP-Servers testen
 
 ```bash
-ldapsearch -x -b "" -s base + -LLL
+ldapsearch -x -b "" -s base -LLL "+"
 ```
 
 Bedeutung der Features:
@@ -45,57 +45,60 @@ Bedeutung der Features:
 
 Suche nach allen Objekten mit dem Attribut `uid`:
 ```bash
-ldapsearch -x -D "uid=admin,dc=example,dc=net" -W "(uid=*)"
+ldapsearch -x -D "cn=admin,dc=example,dc=net" -b "dc=example,dc=net" -W \
+  "(uid=*)"
 ```
 
-UID mit `s` am Anfang:
+UID mit `j` am Anfang:
 ```bash
-ldapsearch -x -D "uid=admin,ou=users,dc=example,dc=net" -W "(uid=s*)"
+ldapsearch -x -D "cn=admin,dc=example,dc=net" -b "dc=example,dc=net" -W \
+  "(uid=j*)"
 ```
 
 nur bestimmte Attribute anzeigen:
 ```bash
-ldapsearch -x -D "uid=admin,ou=users,dc=example,dc=net" -W "(uid=s*)" cn sn
+ldapsearch -x -D "cn=admin,dc=example,dc=net" -b "dc=example,dc=net" -W \
+  "(uid=j*)" uid sn cn
 ```
 
 # logischen Verknüpfungen
 
 ODER-Verknüpfung:
 ```bash
-ldapsearch -x -D "uid=ldap-admin,ou=users,dc=example,dc=net" \
-  -W "(|(uid=s*)(uid=u*))" uid
+ldapsearch -x -D "cn=admin,dc=example,dc=net" -b "dc=example,dc=net" -W \
+  "(|(uid=j*)(uid=u*))" uid
 ```
 
 UND-Verknüpfung:
 ```bash
-ldapsearch -x -D "uid=ldap-admin,ou=users,dc=example,dc=net" \
-  -W "(&(uid=s*)(loginShell=/bin/bash))" uid
+ldapsearch -x -D "cn=admin,dc=example,dc=net" -b "dc=example,dc=net" -W \
+  "(&(uid=j*)(loginShell=/bin/bash))" uid
 ```
 
 Negation:
 ```bash
-ldapsearch -x -D "uid=ldap-admin,ou=users,dc=example,dc=net" \
-  -W "(&(!(uid=c*))(loginShell=/bin/bash))"
+ldapsearch -x -D "cn=admin,dc=example,dc=net" -b "dc=example,dc=net" -W \
+  "(&(!(uid=j*))(loginShell=/bin/bash))"
 ```
 
 # Suchtiefe begrenzen
 
 Suchtiefe begrenzen:
 ```bash
-ldapsearch -x -D "uid=ldap-admin,ou=users,dc=example,dc=net" \
-  -W -b "ou=users,dc=example,dc=net" -s sub "(&(!(uid=*s))(sn=*))"
+ldapsearch -x -D "cn=admin,dc=example,dc=net" -b "dc=example,dc=net" -W \
+  -s sub "(&(!(uid=*n))(sn=*))"
 ```
 
 Systemattribute zeigen:
 ```bash
-ldapsearch -x -D "uid=ldap-admin,ou=users,dc=example,dc=net" -W "(uid=s*)" +
+ldapsearch -x -D "cn=admin,dc=example,dc=net" -b "dc=example,dc=net" -W \
+  "(uid=s*)" +
 ```
 
 # Einträge entfernen
 
 User `tux` löschen:
 ```bash
-sudo ldapdelete -x -D "cn=admin,dc=example,dc=net" \
-  -W -H ldap://ldap.example.net \
-  "uid=tux,ou=people,dc=example,dc=net"
+ldapdelete -x -D "cn=admin,dc=example,dc=net" -W \
+  -H ldap:/// "uid=john,ou=people,dc=example,dc=net"
 ```
