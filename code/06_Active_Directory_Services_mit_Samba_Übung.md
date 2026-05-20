@@ -222,7 +222,7 @@ ps ax | grep 'samba'
 
 oder Lauscher abfragen:
 ```bash
-ss -tlpn | awk 'print $1" "$2" "$3" "$4'
+ss -tlpn | awk '{print $1" "$2" "$3" "$4}'
 ```
 - gibt alle Dienste aus, die der DC bereitstellt
 
