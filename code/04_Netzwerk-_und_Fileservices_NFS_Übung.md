@@ -138,6 +138,8 @@ sudo showmount -e localhost
 
 # Überprüfung auf dem Client
 
+## auf einem Linux-Client
+
 Mount‑Verzeichnis anlegen:
 ```bash
 sudo mkdir -p /mnt/nfs/share
@@ -158,6 +160,15 @@ Inhalt ansehen:
 ```bash
 ls -l /mnt/nfs/share
 ```
+
+## auf einem Windows-Client
+
+- über Windows Features den NFS Client aktivieren
+- dann den Share aufrufen:
+```cmd
+mount.exe -o anon 192.168.111.102:/srv/nfs/share N:
+```
+
 # Automatischer Mount über `/etc/fstab`
 
 zunächst wieder aushängen:

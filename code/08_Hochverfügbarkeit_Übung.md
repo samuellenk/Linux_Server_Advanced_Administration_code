@@ -39,16 +39,27 @@ cat <<EOF >> /etc/hosts
 EOF
 ```
 
+zusätzlich sollte Folgendes passen:
+
+- die Instanz sollte eine feste IP haben
+- der Hostname sollte den Daten aus `/etc/hosts` entsprechen
+- die Namensauflösung (DNS) muss funktionieren
+
 # Speicher-Replikation mit GlusterFS
 
 GlusterFS sorgt dafür, dass die Website-Daten synchron auf allen Nodes liegen.
 
 Installation & Start:
 ```bash
-# Voraussetzung: Paketquellen sind aktuell (apt update)
-apt-get install -y glusterfs-server
-systemctl enable --now glusterd
+sudo apt update
+sudo apt install -y glusterfs-server
+sudo systemctl enable --now glusterd
 ```
+
+Klone erstellen:
+
+- jetzt `node2` und `node3` aus `node1` klonen
+- und auf den neuen Nodes die IP und den Hostnamen entsprechend anpassen
 
 Cluster-Kopplung:
 ```bash
@@ -61,11 +72,11 @@ Volume erstellen & starten:
 ```bash
 # Voraussetzung: Brick-Verzeichnis existiert lokal auf allen Nodes
 DIR='/gluster/brick1/www'
-mkdir -p "$DIR"
+sudo mkdir -p "$DIR"
 
 # Voraussetzung: Peer-Kopplung im vorherigen Schritt war erfolgreich
-gluster volume create web_vol replica 3 node1:"$DIR" node2:"$DIR" node3:"$DIR" force
-gluster volume start web_vol
+sudo gluster volume create web_vol replica 3 node1:"$DIR" node2:"$DIR" node3:"$DIR" force
+sudo gluster volume start web_vol
 ```
 
 # Corosync & Pacemaker
@@ -75,8 +86,8 @@ Jetzt bauen wir das HA-Framework auf, das die Ressourcen überwacht und schwenkt
 Installation & Basis-Konfiguration:
 ```bash
 # Ausführung: Ausführung auf allen 3 Nodes
-apt-get install -y pacemaker pcs fence-agents
-systemctl enable --now pcsd
+sudo apt install -y pacemaker pcs fence-agents
+sudo systemctl enable --now pcsd
 echo "hacluster:TopSecretPass123" | chpasswd
 ```
 
